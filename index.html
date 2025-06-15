@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - 曙光之足迹</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a202c;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #2d3748;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1rem;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        nav .nav-links a {
+            color: #a0aec0;
+            text-decoration: none;
+        }
+
+        nav .nav-links a:hover {
+            color: #e2e8f0;
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        main p {
+            color: #a0aec0;
+            margin-bottom: 2rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .features {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .features {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        .feature {
+            background-color: #2d3748;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .feature h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            color: #a0aec0;
+        }
+
+        footer {
+            background-color: #2d3748;
+            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1rem;
+            text-align: right;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="container">
+            <div class="logo">
+                曙光之足迹
+            </div>
+            <div class="nav-links">
+                <a href="https://wangyinxialex.github.io">主页</a>
+                <a href="https://wangyinxialex.github.io/recommand">推荐</a>
+                <a href="https://wangyinxialex.github.io/download">下载</a>
+                <a href="https://wangyinxialex.github.io/blog">博客</a>
+                <a href="https://wangyinxialex.github.io/team">团队</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main>
+        <h1>欢迎访问Alex的个人网站</h1>
+        <p>
+            这里有更多有趣的秘密等你发现！
+        </p>
+        <div class="feature">
+            <h2>最新焦点</h2>
+            <img style="width: 300px; height: 300px; object-fit: cover; border-radius: 15px; " src="https://cdn.luogu.com.cn/upload/image_hosting/fxmo7o7t.png" />
+        </div>
+        <br>
+        <div class="features">
+            <div class="feature">
+                <h2>博客内容</h2>
+                <p>
+                    暂未开放
+                </p>
+            </div>
+            <div class="feature">
+                <h2>下载更新</h2>
+                <p>
+                    暂未开放
+                </p>
+            </div>
+            <div class="feature">
+                <h2>团队邀请</h2>
+                <p>
+                    暂未开放
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        Developed by <a href="https://www.luogu.com.cn/team/79974" style="color: #a0aec0; text-decoration: none;" target="_blank">Hogwarts</a>. 
+        <br>
+        &copy;  2025~2035 曙光之足迹 
+        <br>
+        All rights reserved.
+    </footer>
+</body>
+
+</html>
+    
