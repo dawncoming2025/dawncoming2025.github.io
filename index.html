@@ -191,8 +191,127 @@
         .feature p {
             color: #cbd5e0;
             font-size: 1.1rem;
-            margin-bottom: 0;
+            margin-bottom: 1.2rem;
             text-align: left;
+        }
+
+        /* 新增：歌曲按钮容器 */
+        .music-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+        /* 新增：歌曲按钮样式 */
+        .music-button {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #4299e1, #63b3ed);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .music-button.more {
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+        }
+
+        .music-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(66, 153, 225, 0.5);
+        }
+
+        .music-button.more:hover {
+            box-shadow: 0 6px 20px rgba(74, 85, 104, 0.5);
+        }
+
+        .music-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #63b3ed, #4299e1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .music-button.more::before {
+            background: linear-gradient(135deg, #4a5568, #2d3748);
+        }
+
+        .music-button:hover::before {
+            opacity: 1;
+        }
+
+        /* 新增：音乐图标（纯CSS实现） */
+        .music-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .music-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 4px;
+            width: 12px;
+            height: 12px;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .music-icon::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 8px;
+            width: 2px;
+            height: 8px;
+            background: white;
+            transform: rotate(30deg);
+        }
+
+        /* 新增：更多图标（纯CSS实现） */
+        .more-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .more-icon::before,
+        .more-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+        }
+
+        .more-icon::before {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            box-shadow: -6px 0 0 white, 6px 0 0 white;
         }
 
         /* 修改后的最新焦点样式 - 所有内容居左 */
@@ -414,6 +533,12 @@
             .highlight h2 {
                 font-size: 1.8rem;
             }
+            
+            /* 移动端按钮调整 */
+            .music-button {
+                padding: 10px 16px;
+                font-size: 1rem;
+            }
         }
 
         /* 动画效果 */
@@ -429,6 +554,13 @@
         .feature:nth-child(1) { animation-delay: 0.1s; }
         .feature:nth-child(2) { animation-delay: 0.2s; }
         .feature:nth-child(3) { animation-delay: 0.3s; }
+        
+        /* 按钮点击动画 */
+        @keyframes buttonClick {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -475,10 +607,21 @@
                 </p>
             </div>
             <div class="feature">
-                <h2>团队邀请</h2>
+                <h2>歌曲在线</h2>
                 <p>
-                    暂未开放
+                    探索更多精彩音乐
                 </p>
+                
+                <div class="music-buttons">
+                    <a href="https://dawncoming2025.github.io/music/BQ0001" class="music-button">
+                        <span class="music-icon"></span>
+                        陈奕迅 - 孤勇者
+                    </a>
+                    <a href="https://dawncoming2025.github.io/music/" class="music-button more">
+                        <span class="more-icon"></span>
+                        更多歌曲...
+                    </a>
+                </div>
             </div>
         </div>
     </main>
@@ -506,5 +649,18 @@
             </div>
         </div>
     </footer>
+    
+    <script>
+        // 为音乐按钮添加点击动画
+        document.querySelectorAll('.music-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // 添加动画效果
+                this.style.animation = 'buttonClick 0.3s ease';
+                setTimeout(() => {
+                    this.style.animation = '';
+                }, 300);
+            });
+        });
+    </script>
 </body>
 </html>
