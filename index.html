@@ -356,6 +356,42 @@
             line-height: 1.7;
             margin-top: 1rem;
         }
+        
+        /* 随机歌曲样式 */
+        .random-label {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff8c00, #ff4500);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+            vertical-align: middle;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        .refresh-btn {
+            background: rgba(99, 179, 237, 0.2);
+            color: #63b3ed;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.3s;
+        }
+        
+        .refresh-btn:hover {
+            background: rgba(99, 179, 237, 0.3);
+            color: #fff;
+        }
 
         footer {
             background: rgba(15, 23, 42, 0.95);
@@ -561,6 +597,40 @@
             50% { transform: scale(0.95); }
             100% { transform: scale(1); }
         }
+        
+        /* 加载动画 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        .loading-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #63b3ed;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: loadingAnimation 1.2s infinite ease-in-out;
+        }
+        
+        .loading-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .loading-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .loading-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes loadingAnimation {
+            0%, 100% { transform: scale(0.8); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -607,25 +677,23 @@
                 </p>
             </div>
             <div class="feature">
-                <h2>歌曲在线</h2>
+                <h2>歌曲在线 <span class="random-label">随机推荐</span></h2>
                 <p>
                     探索更多精彩音乐
                 </p>
                 
-                <div class="music-buttons">
-                    <a href="https://dawncoming2025.github.io/music/#BQ0001" class="music-button">
-                        <span class="music-icon"></span>
-                        陈奕迅 - 孤勇者
-                    </a>
-                    <a href="https://dawncoming2025.github.io/music/#BQ0002" class="music-button">
-                        <span class="music-icon"></span>
-                        骄傲的少年 - 南征北战NZBZ
-                    </a>
-                    <a href="https://dawncoming2025.github.io/music/" class="music-button more">
-                        <span class="more-icon"></span>
-                        更多歌曲...
-                    </a>
+                <div class="music-buttons" id="random-songs-container">
+                    <div class="loading">
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                    </div>
                 </div>
+                <button class="refresh-btn" id="refresh-songs">换一批歌曲</button>
+                <a href="https://dawncoming2025.github.io/music/" class="music-button more">
+                    <span class="more-icon"></span>
+                    更多歌曲...
+                </a>
             </div>
         </div>
     </main>
@@ -665,6 +733,97 @@
                 }, 300);
             });
         });
+        
+        // 模拟从API获取歌曲列表
+        function fetchSongs() {
+            return new Promise((resolve) => {
+                // 模拟网络请求延迟
+                setTimeout(() => {
+                    // 实际应用中这里应该从API获取真实数据
+                    const songs = [
+                        {id: "BQ0001", title: "陈奕迅 - 孤勇者"},
+                        {id: "BQ0002", title: "骄傲的少年 - 南征北战NZBZ"},
+                        {id: "BQ0003", title: "张杰 - 金色的屋檐"},
+                        {id: "BQ0004", title: "张杰 - 逆战"},
+                        {id: "BQ0005", title: "张杰 - 逆战·十年"},
+                        {id: "BQ0006", title: "张杰 - 少年中国说"},
+                        {id: "BQ0007", title: "张杰 - 绽放"},
+                        {id: "BQ0008", title: "张杰 - 直到世界尽头"},
+                        {id: "BQ0009", title: "林俊杰 - 曹操"},
+                        {id: "BQ0010", title: "周深 - 有我"},
+                        {id: "BQ0011", title: "周深 - 亲爱的旅人啊"}
+                    ];
+                    resolve(songs);
+                }, 800); // 模拟网络延迟
+            });
+        }
+        
+        // 随机选择两首歌曲
+        function getRandomSongs(songs) {
+            // 复制数组以避免修改原始数据
+            const shuffled = [...songs].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, 2);
+        }
+        
+        // 渲染随机歌曲
+        function renderRandomSongs(songs) {
+            const container = document.getElementById('random-songs-container');
+            const randomSongs = getRandomSongs(songs);
+            
+            container.innerHTML = '';
+            
+            randomSongs.forEach(song => {
+                const button = document.createElement('a');
+                button.className = 'music-button';
+                button.href = `https://dawncoming2025.github.io/music/#${song.id}`;
+                button.innerHTML = `
+                    <span class="music-icon"></span>
+                    ${song.title}
+                `;
+                
+                // 为按钮添加点击动画
+                button.addEventListener('click', function(e) {
+                    this.style.animation = 'buttonClick 0.3s ease';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 300);
+                });
+                
+                container.appendChild(button);
+            });
+        }
+        
+        // 初始化随机歌曲
+        async function initRandomSongs() {
+            const container = document.getElementById('random-songs-container');
+            
+            try {
+                // 显示加载状态
+                container.innerHTML = `
+                    <div class="loading">
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                    </div>
+                `;
+                
+                const songs = await fetchSongs();
+                renderRandomSongs(songs);
+            } catch (error) {
+                console.error('加载歌曲失败:', error);
+                container.innerHTML = `
+                    <div style="color: #e53e3e; padding: 10px; text-align: center;">
+                        加载歌曲失败，请稍后再试
+                    </div>
+                `;
+            }
+        }
+        
+        // 添加刷新按钮事件
+        document.getElementById('refresh-songs').addEventListener('click', initRandomSongs);
+        
+        // 页面加载完成后初始化随机歌曲
+        window.addEventListener('DOMContentLoaded', initRandomSongs);
     </script>
 </body>
 </html>
