@@ -734,42 +734,49 @@
             });
         });
         
-        // 模拟从API获取歌曲列表
-        function fetchSongs() {
-            return new Promise((resolve) => {
-                // 模拟网络请求延迟
-                setTimeout(() => {
-                    // 实际应用中这里应该从API获取真实数据
-                    const songs = [
-                        {id: "BQ0001", title: "陈奕迅 - 孤勇者"},
-                        {id: "BQ0002", title: "骄傲的少年 - 南征北战NZBZ"},
-                        {id: "BQ0003", title: "张杰 - 金色的屋檐"},
-                        {id: "BQ0004", title: "张杰 - 逆战"},
-                        {id: "BQ0005", title: "张杰 - 逆战·十年"},
-                        {id: "BQ0006", title: "张杰 - 少年中国说"},
-                        {id: "BQ0007", title: "张杰 - 绽放"},
-                        {id: "BQ0008", title: "张杰 - 直到世界尽头"},
-                        {id: "BQ0009", title: "林俊杰 - 曹操"},
-                        {id: "BQ0010", title: "周深 - 有我"},
-                        {id: "BQ0011", title: "周深 - 亲爱的旅人啊"},
-                        {id: "BQ0012", title: "陈雪燃 - 无名之辈"},
-                        {id: "BQ0013", title: "张杰 - 新征程"},
-                        {id: "BQ0014", title: "张杰 - 逆态度"},
-                        {id: "BQ0015", title: "风时千景、蓝四爷 - 《大圣归来》—致敬西游记之大圣归来 同名曲"},
-                        {id: "BQ0016", title: "周深 - 小美满"},
-                        {id: "BQ0017", title: "周深 - 起风了"},
-                        {id: "BQ0018", title: "周深 - 大鱼"},
-                        {id: "BQ0019", title: "温奕心 - 一路生花"},
-                        {id: "BQ0020", title: "周深 - 化身孤岛的鲸"},
-                        {id: "BQ0021", title: "周深、张也 - 灯火里的中国"},
-                        {id: "BQ0022", title: "周深 - 若梦"},
-                        {id: "BQ0023", title: "周深 - 若以尘埃"},
-                        {id: "BQ0024", title: "周深 - 光亮"},
-                        {id: "BQ0025", title: "周深 - 若仙"}
-                    ];
-                    resolve(songs);
-                }, 800); // 模拟网络延迟
-            });
+        // 从API获取歌曲列表
+        async function fetchSongs() {
+            try {
+                const response = await fetch('https://dawncoming2025.github.io/music-upload/MusicList.bql');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const text = await response.text();
+                
+                // 解析文本数据
+                const songs = [];
+                const lines = text.split('\n');
+                
+                for (const line of lines) {
+                    // 跳过空行
+                    if (!line.trim()) continue;
+                    
+                    // 解析格式：歌曲编号 歌曲名 作者 时长
+                    const parts = line.split(' ');
+                    
+                    // 确保至少有4个部分
+                    if (parts.length < 4) continue;
+                    
+                    // 提取各部分
+                    const id = parts[0];
+                    // 歌曲名可能包含空格，所以取除了第一和最后两个部分的所有内容
+                    const title = parts.slice(1, parts.length - 2).join(' ');
+                    const author = parts[parts.length - 2];
+                    const duration = parts[parts.length - 1];
+                    
+                    songs.push({
+                        id,
+                        title,
+                        author,
+                        duration
+                    });
+                }
+                
+                return songs;
+            } catch (error) {
+                console.error('获取歌曲列表失败:', error);
+                throw error;
+            }
         }
         
         // 随机选择两首歌曲
@@ -789,10 +796,12 @@
             randomSongs.forEach(song => {
                 const button = document.createElement('a');
                 button.className = 'music-button';
-                button.href = `https://dawncoming2025.github.io/music/#${song.id}`;
+                // 使用新的链接格式
+                button.href = `https://dawncoming2025.github.io/music/single#${song.id}`;
+                // 显示格式：歌曲名 - 作者
                 button.innerHTML = `
                     <span class="music-icon"></span>
-                    ${song.title}
+                    ${song.title} - ${song.author}
                 `;
                 
                 // 为按钮添加点击动画
